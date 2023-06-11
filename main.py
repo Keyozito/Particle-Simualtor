@@ -1,33 +1,22 @@
 # Particle Sim
 
 import pygame
-import os
 import random
-import threading
-
 pygame.init()
 screen = pygame.display.set_mode([500,500], vsync=True)
 tps = pygame.time.Clock()
 font = pygame.font.Font("./Fontes/PeaberryBase.ttf", 13)
 
 # Colors
+white = [255,255,255]
 yellow = [255, 210, 0]
 blue = [77, 75, 231]
 green2 = [141, 183, 31]
 black = [0, 0, 0]
 
-class solid():
-    def __init__(self):
-        self.x1 = 0
-        self.x2 = 500
-        self.y1 = 500
-        self.y2 = 500
-        self.color = black
-    def printSolid(self):
-        pygame.draw.rect(screen, self.color, [self.x1,self.y1, self.x2-self.x1,self.y2-self.y1])
-
 class particle():
-    global particlesIndex, particlesIndex2, particlesIndex3, particlesIndex4
+    global particlesIndex
+
     particlesIndex = []
 
     def __init__(self):
@@ -78,7 +67,7 @@ class particle():
 
                 # Particles Collisions
                 # Down Verifications
-                elif not any(w[:2] == (x, y+4) for w in particlesIndex):
+                elif not any(w[:2] == (x, y+4) and w[2] != blue for w in particlesIndex):
                     y += 4
 
                 else:
@@ -154,7 +143,6 @@ class particle():
             particlesIndex[i] = (x,y, particlesIndex[i][2])
 
 particles = particle()
-solids = solid()
 
 holdingLeft = False
 holdingRight = False
@@ -190,7 +178,6 @@ while True:
         particles.deleteParticles()
 
     # Render
-
     particles.movementParticles()
     particles.printParticles()
 
